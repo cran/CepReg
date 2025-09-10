@@ -1,0 +1,17 @@
+0299f18d2622f05921175ccd895893b1 *DESCRIPTION
+737257eaa846d8b7532fbeea5c78f4bd *LICENSE
+03251de573dbe3f81f6fca6da186779d *NAMESPACE
+636c99528a10ca97bcd59665d412b6b8 *R/cepstral.R
+936719505124c035b7d5fa2be71a67fe *inst/WORDLIST
+39e39ea53de8bd8a81ae4f0b46f52038 *man/CepReg.Rd
+8b7bea2b729ad1b76bde23115ec49928 *man/boot_effect.Rd
+7897764d0a5619f1d2002213e6cec318 *man/cep_get.Rd
+5ca670710479cdc81dff854ee8b3f776 *man/data_generater.Rd
+a851a73a639003f8db1f1fe55a59653b *man/effect_get.Rd
+26607d72786d8512cea74a6c5c52dc25 *man/env_get.Rd
+61f396921ac3b933696f414d3bd9a70b *man/generate_sig.Rd
+8dcb764c144ea42db1914cc526b5a857 *man/ols_get.Rd
+c8674626e1429eeafb5511a0b99646c9 *man/perd_get.Rd
+86ac454328bbf4ac8686b55be798778f *man/psi_get.Rd
+edbf26e1f88206ae819ad08798c4174f *man/rrr_get.Rd
+a65259cacfb392946f75ca3d7433847f *man/spec_regress.Rd
