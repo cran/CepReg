@@ -73,13 +73,17 @@ p <- 2
 ind <- 1:p
 
 Y <- matrix(rnorm(N * nbase), nrow = N, ncol = nbase)
-
 X <- matrix(rnorm(N * p), nrow = N, ncol = p)
-
-
 frq <- seq(1, nbase) / len
 
 rrr_out <- rrr_get(Y, X, frq, nbase, nrank)
+
+res_matrix <- rrr_out$res
+if (ncol(res_matrix) != length(frq)) {
+  res_matrix <- matrix(
+  res_matrix[, 1:length(frq)],
+  nrow = N,
+  ncol = length(frq))}
 
 eff <- effect_get(rrr_out$alph, rrr_out$bet, frq, nbase, ind)
 alpha_eff <- eff$alpha_effect
@@ -89,7 +93,7 @@ logspect <- matrix(rnorm(N * length(frq)), nrow = N, ncol = length(frq))
 
 boot_ci <- boot_effect(
   logspect = logspect,
-  res = rrr_out$res,
+  res = res_matrix,
   alpha_effect = alpha_eff,
   beta_effect = beta_eff,
   X = X,

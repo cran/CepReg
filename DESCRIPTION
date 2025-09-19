@@ -1,6 +1,6 @@
 Package: CepReg
 Title: A Cepstral Model for Covariate-Dependent Time Series
-Version: 0.1.0
+Version: 0.1.2
 Authors@R: 
     c( 
         person("Qi", "Xia", email = "xiaqi1010@gmail.com", role = c("aut", "cre")),
@@ -15,6 +15,6 @@ Author: Qi Xia [aut, cre],
   Zeda Li [aut, ctb]
 Maintainer: Qi Xia <xiaqi1010@gmail.com>
 NeedsCompilation: no
-Packaged: 2025-09-06 02:32:13 UTC; qi70
+Packaged: 2025-09-18 17:08:37 UTC; qi70
 Repository: CRAN
-Date/Publication: 2025-09-10 08:50:30 UTC
+Date/Publication: 2025-09-19 23:40:26 UTC

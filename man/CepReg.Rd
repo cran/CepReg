@@ -53,8 +53,8 @@ selects the number of cepstral basis functions via AIC.
 \examples{
 set.seed(123)
 niter <- 5
-len <- 10
-N <- 3
+len <- 20
+N <- 10
 p <- 2
 L <- floor(len/2)-1
 frq <- (1:L)/len
@@ -80,9 +80,9 @@ for(j in 1:N){
 
 Z <- data_generater(N,len,sqrt(spec))
 
-res_ols <- CepReg(Z, X, method = "ols", number_of_K = 2,
+res_ols <- CepReg(Z, X, method = "ols", number_of_K = 5,
          if_bootstrap = TRUE, level = 0.95,
-         nboot = 2, ind = 1)
+         nboot = 10, ind = 1)
 
 eff_ols <- res_ols$eff
 boot_ols <- res_ols$boot
@@ -91,10 +91,8 @@ plot(frq, eff_ols$alpha_effect, type = 'l', col = "black", xlab = "Frequency", y
      ylim = range(c(boot_ols$alpha_ci,
      eff_ols$alpha_effect, 2*cos(2*pi*frq)+0.577)))
 title(ylab = expression(alpha(omega)), line = 2, cex.lab = 1.2)
-lines(frq, boot_ols$alpha_ci[, 1], col = "black")
-lines(frq, boot_ols$alpha_ci[, 2], col = "black")
+lines(frq, boot_ols$alpha_ci[, 1], col = "black", lty = 2)
+lines(frq, boot_ols$alpha_ci[, 2], col = "black", lty = 2)
 lines(frq, 2 * cos(2 * pi * frq) + 0.577, col = "red", lty = 1, lwd = 2)
-legend("topright",legend = c("True", "Estimated", "CI"),
-     col = c("red", "black", "black"), ncol = 1)
 
 }

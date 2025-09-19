@@ -32,7 +32,7 @@ library(Renvlp)
 
 set.seed(123)
 frq <- seq(0, 1, length.out = 16)[2:8]
-n <- 20
+n <- 15
 p <- 3
 nbase <- 5
 X <- matrix(rnorm(n * p), n, p)
@@ -41,7 +41,7 @@ f <- matrix(rnorm(n * nbase), n, nbase)
 u_max <- min(ncol(X), ncol(f))
 cv_errors <- numeric(u_max)
 for (j in 1:u_max) {
-  cv_errors[j] <- cv.xenv(X, f, j, m = 5, nperm = 50)
+  cv_errors[j] <- cv.xenv(X, f, j, m = 5, nperm = 10)
 }
 optimal_u <- which.min(cv_errors)
 

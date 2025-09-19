@@ -256,7 +256,7 @@ rrr_get <- function(X, f, frq, nbase, nrank) {
 #'
 #' set.seed(123)
 #' frq <- seq(0, 1, length.out = 16)[2:8]
-#' n <- 20
+#' n <- 15
 #' p <- 3
 #' nbase <- 5
 #' X <- matrix(rnorm(n * p), n, p)
@@ -265,7 +265,7 @@ rrr_get <- function(X, f, frq, nbase, nrank) {
 #' u_max <- min(ncol(X), ncol(f))
 #' cv_errors <- numeric(u_max)
 #' for (j in 1:u_max) {
-#'   cv_errors[j] <- cv.xenv(X, f, j, m = 5, nperm = 50)
+#'   cv_errors[j] <- cv.xenv(X, f, j, m = 5, nperm = 10)
 #' }
 #' optimal_u <- which.min(cv_errors)
 #'
@@ -430,13 +430,17 @@ effect_get = function(alpha, beta, frq, nbase, ind) {
 #' ind <- 1:p
 #'
 #' Y <- matrix(rnorm(N * nbase), nrow = N, ncol = nbase)
-#'
 #' X <- matrix(rnorm(N * p), nrow = N, ncol = p)
-#'
-#'
 #' frq <- seq(1, nbase) / len
 #'
 #' rrr_out <- rrr_get(Y, X, frq, nbase, nrank)
+#'
+#' res_matrix <- rrr_out$res
+#' if (ncol(res_matrix) != length(frq)) {
+#'   res_matrix <- matrix(
+#'   res_matrix[, 1:length(frq)],
+#'   nrow = N,
+#'   ncol = length(frq))}
 #'
 #' eff <- effect_get(rrr_out$alph, rrr_out$bet, frq, nbase, ind)
 #' alpha_eff <- eff$alpha_effect
@@ -446,7 +450,7 @@ effect_get = function(alpha, beta, frq, nbase, ind) {
 #'
 #' boot_ci <- boot_effect(
 #'   logspect = logspect,
-#'   res = rrr_out$res,
+#'   res = res_matrix,
 #'   alpha_effect = alpha_eff,
 #'   beta_effect = beta_eff,
 #'   X = X,
@@ -669,8 +673,8 @@ data_generater <- function(N, nobs, spec) {
 #' @examples
 #' set.seed(123)
 #' niter <- 5
-#' len <- 10
-#' N <- 3
+#' len <- 20
+#' N <- 10
 #' p <- 2
 #' L <- floor(len/2)-1
 #' frq <- (1:L)/len
@@ -696,9 +700,9 @@ data_generater <- function(N, nobs, spec) {
 #'
 #' Z <- data_generater(N,len,sqrt(spec))
 #'
-#' res_ols <- CepReg(Z, X, method = "ols", number_of_K = 2,
+#' res_ols <- CepReg(Z, X, method = "ols", number_of_K = 5,
 #'          if_bootstrap = TRUE, level = 0.95,
-#'          nboot = 2, ind = 1)
+#'          nboot = 10, ind = 1)
 #'
 #' eff_ols <- res_ols$eff
 #' boot_ols <- res_ols$boot
@@ -707,11 +711,9 @@ data_generater <- function(N, nobs, spec) {
 #'      ylim = range(c(boot_ols$alpha_ci,
 #'      eff_ols$alpha_effect, 2*cos(2*pi*frq)+0.577)))
 #' title(ylab = expression(alpha(omega)), line = 2, cex.lab = 1.2)
-#' lines(frq, boot_ols$alpha_ci[, 1], col = "black")
-#' lines(frq, boot_ols$alpha_ci[, 2], col = "black")
+#' lines(frq, boot_ols$alpha_ci[, 1], col = "black", lty = 2)
+#' lines(frq, boot_ols$alpha_ci[, 2], col = "black", lty = 2)
 #' lines(frq, 2 * cos(2 * pi * frq) + 0.577, col = "red", lty = 1, lwd = 2)
-#' legend("topright",legend = c("True", "Estimated", "CI"),
-#'      col = c("red", "black", "black"), ncol = 1)
 #'
 CepReg <- function(y,
                    x,
