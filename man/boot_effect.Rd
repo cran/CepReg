@@ -17,7 +17,7 @@ boot_effect(
   ind,
   level,
   nboot,
-  method = "rrr",
+  method = "rrr_get",
   verb = FALSE
 )
 }
@@ -76,7 +76,7 @@ Y <- matrix(rnorm(N * nbase), nrow = N, ncol = nbase)
 X <- matrix(rnorm(N * p), nrow = N, ncol = p)
 frq <- seq(1, nbase) / len
 
-rrr_out <- rrr_get(Y, X, frq, nbase, nrank)
+rrr_out <- rrr_get(X, Y, frq, nbase, nrank)
 
 res_matrix <- rrr_out$res
 if (ncol(res_matrix) != length(frq)) {
@@ -104,7 +104,7 @@ boot_ci <- boot_effect(
   ind = ind,
   level = level,
   nboot = nboot,
-  method = "rrr",
+  method = "rrr_get",
   verb = TRUE
 )
 

@@ -1,10 +1,10 @@
-33b8cc7f1598b2f6f239f7deecdfa93a *DESCRIPTION
+0c6ba13989b9f8522afc60014d1b571c *DESCRIPTION
 737257eaa846d8b7532fbeea5c78f4bd *LICENSE
-03251de573dbe3f81f6fca6da186779d *NAMESPACE
-53c8d0d618ea29b5122af567ff258d37 *R/cepstral.R
+ca2f97f0b7025ccacb01f4de2507e83d *NAMESPACE
+ac54da8ef2eff74f973a0169e84da894 *R/cepstral.R
 936719505124c035b7d5fa2be71a67fe *inst/WORDLIST
-765e28df3f51f0f80f6ad4d145a03245 *man/CepReg.Rd
-7d0e8ffb3c02a06404069820253ca79c *man/boot_effect.Rd
+0eb9ac92afa370121555b21b6afdc905 *man/CepReg.Rd
+e9b6d2b125efd220f1fc5a82b75949cd *man/boot_effect.Rd
 7897764d0a5619f1d2002213e6cec318 *man/cep_get.Rd
 5ca670710479cdc81dff854ee8b3f776 *man/data_generater.Rd
 a851a73a639003f8db1f1fe55a59653b *man/effect_get.Rd
@@ -13,5 +13,5 @@ a851a73a639003f8db1f1fe55a59653b *man/effect_get.Rd
 8dcb764c144ea42db1914cc526b5a857 *man/ols_get.Rd
 c8674626e1429eeafb5511a0b99646c9 *man/perd_get.Rd
 86ac454328bbf4ac8686b55be798778f *man/psi_get.Rd
-edbf26e1f88206ae819ad08798c4174f *man/rrr_get.Rd
+35e66616b7b6f7c5af56dc288063940f *man/rrr_get.Rd
 a65259cacfb392946f75ca3d7433847f *man/spec_regress.Rd

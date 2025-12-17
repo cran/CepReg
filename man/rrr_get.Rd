@@ -39,8 +39,6 @@ nbase <- 2
 
 X <- matrix(rnorm(n * p), n, p)
 
-psi <- psi_get(nbase, frq)
-
 true_beta <- matrix(rnorm(p * nbase), p, nbase)
 alph <- rnorm(nbase)
 f <- X \%*\% true_beta + matrix(alph, n, nbase, byrow = TRUE) +

@@ -47,7 +47,7 @@ A list with components:
 \description{
 Performs cepstral regression to model frequency domain relationships between a
 functional response and scalar covariates. Supports ordinary least squares (OLS),
-reduced-rank regression (RRR), and envelope regression (ENV) methods. Automatically
+reduced-rank regression (rrr_get), and envelope regression (ENV) methods. Automatically
 selects the number of cepstral basis functions via AIC.
 }
 \examples{

@@ -1,5 +1,4 @@
 #' @import MASS
-#' @import rrpack
 #' @import psych
 #' @import Renvlp
 #' @importFrom stats mvfft quantile rnorm
@@ -203,8 +202,6 @@ spec_regress = function(perd, psi, Wmat, k0) {
 #'
 #' X <- matrix(rnorm(n * p), n, p)
 #'
-#' psi <- psi_get(nbase, frq)
-#'
 #' true_beta <- matrix(rnorm(p * nbase), p, nbase)
 #' alph <- rnorm(nbase)
 #' f <- X %*% true_beta + matrix(alph, n, nbase, byrow = TRUE) +
@@ -213,17 +210,24 @@ spec_regress = function(perd, psi, Wmat, k0) {
 #' rrr <- rrr_get(X, f, frq, nbase = nbase, nrank = 1)
 
 rrr_get <- function(X, f, frq, nbase, nrank) {
-  # get basis function
-  psi = psi_get(nbase, frq)
-  rr_results = rrr(f, scale(X, scale = FALSE), maxrank = nrank)
-  bet = rr_results$coef
-  alph = colMeans(f) - t(bet) %*% colMeans(X)
-  res = f - X %*% (bet) - matrix(alph, nrow(X), nbase, byrow = TRUE)
-  fit = t(alph %*% matrix(1, 1, dim(X)[1])) + X %*% bet
-  spechat =  fit %*% psi
+  psi <- psi_get(nbase, frq)
+  Xc <- scale(X, scale = FALSE)
+  B_ols <- solve(t(Xc) %*% Xc) %*% t(Xc) %*% f
+  Y_hat <- Xc %*% B_ols
+  svd_fit <- svd(Y_hat)
+  r <- min(nrank, length(svd_fit$d))
+  Ur <- svd_fit$u[, 1:r, drop = FALSE]
+  Dr <- diag(svd_fit$d[1:r])
+  Vr <- svd_fit$v[, 1:r, drop = FALSE]
+  B_rrr <- B_ols %*% Vr %*% t(Vr)
+  alph <- colMeans(f) - t(B_rrr) %*% colMeans(X)
+  res <- f - X %*% B_rrr - matrix(alph, nrow(X), nbase, byrow = TRUE)
+  fit <- matrix(alph, nrow(X), nbase, byrow = TRUE) + X %*% B_rrr
+  spechat <- fit %*% psi
+
   return(list(
     alph = alph,
-    bet = bet,
+    bet = B_rrr,
     spechat = spechat,
     res = res
   ))
@@ -433,7 +437,7 @@ effect_get = function(alpha, beta, frq, nbase, ind) {
 #' X <- matrix(rnorm(N * p), nrow = N, ncol = p)
 #' frq <- seq(1, nbase) / len
 #'
-#' rrr_out <- rrr_get(Y, X, frq, nbase, nrank)
+#' rrr_out <- rrr_get(X, Y, frq, nbase, nrank)
 #'
 #' res_matrix <- rrr_out$res
 #' if (ncol(res_matrix) != length(frq)) {
@@ -461,7 +465,7 @@ effect_get = function(alpha, beta, frq, nbase, ind) {
 #'   ind = ind,
 #'   level = level,
 #'   nboot = nboot,
-#'   method = "rrr",
+#'   method = "rrr_get",
 #'   verb = TRUE
 #' )
 #'
@@ -485,7 +489,7 @@ boot_effect <- function(logspect,
                         ind,
                         level,
                         nboot,
-                        method = "rrr",
+                        method = "rrr_get",
                         verb = FALSE) {
   len = ncol(logspect)
   N = nrow(X)
@@ -504,7 +508,7 @@ boot_effect <- function(logspect,
     Zboot = data_generater(N, len, t(sqrt(specthat)))
     perd = perd_get(Zboot)
     f = cep_get(perd, nbase, frq1)$f
-    if (method == "rrr") {
+    if (method == "rrr_get") {
       output = rrr_get(X, f, frq1, nbase, nrank)
     } else if (method == "ols") {
       output = ols_get(X, f, frq1, nbase)
@@ -648,7 +652,7 @@ data_generater <- function(N, nobs, spec) {
 #'
 #' Performs cepstral regression to model frequency domain relationships between a
 #' functional response and scalar covariates. Supports ordinary least squares (OLS),
-#' reduced-rank regression (RRR), and envelope regression (ENV) methods. Automatically
+#' reduced-rank regression (rrr_get), and envelope regression (ENV) methods. Automatically
 #' selects the number of cepstral basis functions via AIC.
 #'
 #' @param y Numeric matrix of dimension (time points) × (samples).
@@ -764,7 +768,7 @@ CepReg <- function(y,
     fit <- ols_get(as.matrix(x), f, frq2, nbase)
   } else if (method == "rrr") {
     if (is.null(nrank))
-      stop("Please specify nrank for RRR method")
+      stop("Please specify nrank for rrr method")
     fit <- rrr_get(as.matrix(x), f, frq2, nbase, nrank)
   } else if (method == "env") {
     fit <- env_get(as.matrix(x), f, frq2, nbase)
